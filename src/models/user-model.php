@@ -12,7 +12,7 @@ class User extends Connection {
 
     // get user data from email (for login)
     public function fetchDataByEmail($email) {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM users WHERE user_email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':email', $email);
 
@@ -27,7 +27,7 @@ class User extends Connection {
     }
 
     public function fetchDataByID($id) {
-        $query = "SELECT * FROM users WHERE id = :id";
+        $query = "SELECT * FROM users WHERE user_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
 
@@ -42,7 +42,7 @@ class User extends Connection {
 
     // get user data from username (for registration)
     public function fetchDataByUsername($username) {
-        $query = "SELECT * FROM users WHERE username = :username";
+        $query = "SELECT * FROM users WHERE user_username = :username";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':username', $username);
 
@@ -60,7 +60,7 @@ class User extends Connection {
         // hash password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $query = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+        $query = "INSERT INTO users (user_username, user_email, user_password) VALUES (:username, :email, :password)";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
@@ -78,7 +78,7 @@ class User extends Connection {
         // hash password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $query = "UPDATE users SET username = :username, email = :email, password = :password WHERE id = :id";
+        $query = "UPDATE users SET user_username = :username, user_email = :email, user_password = :password WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);

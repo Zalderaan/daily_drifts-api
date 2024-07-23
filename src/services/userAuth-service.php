@@ -31,7 +31,7 @@ class UserAuthService extends User{
         if (!$user) {
             // echo "User not found";
             throw new Exception("User not found");
-        } else if (!password_verify($password, $user['password'])) {
+        } else if (!password_verify($password, $user['user_password'])) {
             // echo "user found, wrong password";
             // echo password_hash($password, PASSWORD_DEFAULT) . "<br>";
             // echo $user['password'];

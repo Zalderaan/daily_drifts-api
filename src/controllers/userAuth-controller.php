@@ -35,7 +35,7 @@ class UserAuthController {
             $result = $this->userAuthService->login($data['email'], $data['password']);
 
             if ($result) {
-                $token = $this->JWTservice->generateToken($result['id'], $result['email']);
+                $token = $this->JWTservice->generateToken($result['user_id'], $result['user_email']);
                 $data['token'] = $token;
                 http_response_code(200); // OK
                 echo json_encode(['message' => 'User logged in successfully', 'email' => $data['email'], 'token' => $data['token']]);
