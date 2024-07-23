@@ -1,0 +1,23 @@
+# Use the Rewrite Engine
+RewriteEngine On
+
+# Ensure that requests are only handled by index.php if the file or directory doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L,QSA]
+
+# Security rules (optional but recommended)
+# Prevent access to hidden files (e.g., .env, .git, etc.)
+<FilesMatch "^\.">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Prevent access to sensitive PHP files
+<FilesMatch "^(config|vendor|private|secret|setup|install|update)\.php$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
