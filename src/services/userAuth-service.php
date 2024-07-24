@@ -3,17 +3,17 @@
 require_once __DIR__ . '/../models/user-model.php';
 
 class UserAuthService extends User{
-    public function register($username, $email, $password){
-        $existingEmail = User::fetchDataByEmail($email);
-        $exitingUsername = User::fetchDataByUsername($username);
-        if (!$username || !$email || !$password) {
+    public function register($data){
+        $existingEmail = User::fetchDataByEmail($data['email']);
+        $exitingUsername = User::fetchDataByUsername($data['username']);
+        if (!$data['username'] || !$data['email'] || !$data['password']) {
             throw new Exception("All fields are required");
         } else if ($existingEmail) {
             throw new Exception("Email already in use");
         } else if ($exitingUsername) {
             throw new Exception("Username already in use");
         } else {
-            $user_id = User::create($username, $email, $password);
+            $user_id = User::create($data);
             $registeredUser = User::fetchDataById($user_id);
 
             // echo $user_id;

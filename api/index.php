@@ -17,14 +17,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/dbconnection.php';
+require_once __DIR__ . '/../src/routes/routes.php';
 require_once __DIR__ . '/../src/controllers/userAuth-controller.php';
+// require_once __DIR__ . '/../src/controllers/blog-controller.php';
 
+// environment variables
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../config');
 $dotenv->load();
 
 // setup routing
+$router = new Router();
+
+// get request URI and request method
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
@@ -33,9 +39,8 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 // echo $requestMethod . '<br>';
 
 // remove the query string from URI
-// Remove leading directories if necessary
-$baseDir = '/blog-api/api'; // Your base directory http://localhost/blog-api
-$path = str_replace($baseDir, '', $requestUri);
+$baseDir = '/blog-api/api'; 
+$path = str_replace($baseDir, '', $requestUri); // Remove leading directories
 
 // Remove query string
 $path = strtok($path, '?');
@@ -43,21 +48,7 @@ $path = strtok($path, '?');
 //  // for debugging purposes
 // echo $path;
 
-// basic routing
-if($requestMethod === 'POST') {
-    switch($path){
-        case '/register':
-            // echo 'register in switch reached';
-            $userAuthController = new UserAuthController();
-            $userAuthController->register();
-            break;
-        case '/login':
-            // echo 'login in switch reached';
-            $userAuthController = new UserAuthController();
-            $userAuthController->login();
-            break;
-        default:
-    }
-}
+// routing
+$router->dispatch($requestMethod, $path);
 
 

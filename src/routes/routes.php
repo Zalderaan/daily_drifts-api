@@ -21,4 +21,22 @@ class Router {
             
         });
     }
+
+    public function dispatch($method, $uri){
+        $routeInfo = $this->dispatcher->dispatch($method, $uri);
+        switch ($routeInfo[0]) {
+            case \FastRoute\Dispatcher::NOT_FOUND:
+                echo '404 Not Found';
+                break;
+            case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+                $allowedMethods = $routeInfo[1];
+                echo '405 Method Not Allowed';
+                break;
+            case \FastRoute\Dispatcher::FOUND:
+                $handler = $routeInfo[1];
+                $vars = $routeInfo[2];
+                call_user_func_array([new $handler[0], $handler[1]], $vars);
+                break;
+        }
+    }
 }

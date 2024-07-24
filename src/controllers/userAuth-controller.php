@@ -17,7 +17,7 @@ class UserAuthController {
         $data = json_decode(file_get_contents('php://input'), true);
 
         try {
-            $result = $this->userAuthService->register($data['username'], $data['email'], $data['password']);
+            $result = $this->userAuthService->register($data);
             http_response_code(201); // Created
             echo json_encode(['message' => 'User registered successfully', 'data' => $data['username']]);
         } catch (\Exception $e) {

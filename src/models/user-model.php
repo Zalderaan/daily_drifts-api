@@ -57,14 +57,14 @@ class User extends Connection {
 
     // create new user
     // public function create($username, $email, $password) {
-        public function create($username, $email, $password) {
+        public function create($data) {
         // hash password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
         $query = "INSERT INTO users (user_username, user_email, user_password) VALUES (:username, :email, :password)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':username', $data['username']);
+        $stmt->bindParam(':email', $data['email']);
         $stmt->bindParam(':password', $hashedPassword);
 
         try {
