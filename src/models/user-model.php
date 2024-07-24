@@ -11,7 +11,7 @@ class User extends Connection {
     }
 
     // get user data from email (for login)
-    public function fetchDataByEmail($email) {
+    public function fetchDataByEmail($data) {
         $query = "SELECT * FROM users WHERE user_email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':email', $email);
@@ -26,7 +26,7 @@ class User extends Connection {
         }
     }
 
-    public function fetchDataByID($id) {
+    public function fetchDataByID($data) {
         $query = "SELECT * FROM users WHERE user_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -41,7 +41,7 @@ class User extends Connection {
     }
 
     // get user data from username (for registration)
-    public function fetchDataByUsername($username) {
+    public function fetchDataByUsername($data) {
         $query = "SELECT * FROM users WHERE user_username = :username";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':username', $username);

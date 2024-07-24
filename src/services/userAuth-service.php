@@ -22,16 +22,16 @@ class UserAuthService extends User{
         }
     }
 
-    public function login($email, $password){
-        if (!$email || !$password) {
+    public function login($data){
+        if (!$data['email'] || !$data['password']) {
             throw new Exception("All fields are required");
         }
 
-        $user = User::fetchDataByEmail($email);
+        $user = User::fetchDataByEmail($data['email']);
         if (!$user) {
             // echo "User not found";
             throw new Exception("User not found");
-        } else if (!password_verify($password, $user['user_password'])) {
+        } else if (!password_verify($data['password'], $user['user_password'])) {
             // echo "user found, wrong password";
             // echo password_hash($password, PASSWORD_DEFAULT) . "<br>";
             // echo $user['password'];

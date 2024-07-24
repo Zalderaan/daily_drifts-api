@@ -32,7 +32,7 @@ class UserAuthController {
         $data = json_decode(file_get_contents('php://input'), true);
 
         try {
-            $result = $this->userAuthService->login($data['email'], $data['password']);
+            $result = $this->userAuthService->login($data);
 
             if ($result) {
                 $token = $this->JWTservice->generateToken($result['user_id'], $result['user_email']);
