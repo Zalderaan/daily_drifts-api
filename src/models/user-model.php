@@ -56,7 +56,8 @@ class User extends Connection {
     }
 
     // create new user
-    public function create($username, $email, $password) {
+    // public function create($username, $email, $password) {
+        public function create($username, $email, $password) {
         // hash password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
