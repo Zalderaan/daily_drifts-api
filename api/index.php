@@ -19,6 +19,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/dbconnection.php';
 require_once __DIR__ . '/../src/routes/routes.php';
 require_once __DIR__ . '/../src/controllers/userAuth-controller.php';
+require_once __DIR__ . '/../src/controllers/blog-controller.php';
 // require_once __DIR__ . '/../src/controllers/blog-controller.php';
 
 // environment variables

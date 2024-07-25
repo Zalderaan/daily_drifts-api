@@ -18,7 +18,8 @@ class Router {
             $r->addRoute('POST', '/login', ['UserAuthController', 'login']);
 
             // posts
-            
+            $r->addRoute('POST', '/create-blog', ['BlogController', 'createBlog']);
+            $r->addRoute('GET', '/blogs', ['BlogController', 'getAllBlogs']);
         });
     }
 
