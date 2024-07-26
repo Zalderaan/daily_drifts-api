@@ -15,11 +15,8 @@ CREATE TABLE IF NOT EXISTS blogs (
     blog_id INT AUTO_INCREMENT PRIMARY KEY,
     blog_title VARCHAR(255) NOT NULL,
     blog_body TEXT NOT NULL,
-    blog_user_id INT NOT NULL,
     blog_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    blog_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (blog_user_id) REFERENCES users(user_id)
+    blog_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS author_posts (
@@ -29,8 +26,8 @@ CREATE TABLE IF NOT EXISTS author_posts (
     author_posts_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     author_posts_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (author_posts_user_id) REFERENCES users(user_id),
-    FOREIGN KEY (author_posts_blog_id) REFERENCES blogs(blog_id)
+    FOREIGN KEY (author_posts_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_posts_blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -41,6 +38,8 @@ CREATE TABLE IF NOT EXISTS comments (
     comment_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     comment_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (comment_user_id) REFERENCES users(user_id),
-    FOREIGN KEY (comment_blog_id) REFERENCES blogs(blog_id)
+    FOREIGN KEY (comment_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_blog_id) REFERENCES blogs(blog_id) ON DELETE CASCADE
 );
+
+-- INSERT INTO users (user_username, user_email, user_password) VALUES ('testuser', 'testuser@sample.com', 'sample');

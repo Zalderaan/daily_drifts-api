@@ -59,13 +59,30 @@ class UserAuthController {
     public function logout(){
         // echo "logout in controller reached";
         try {
-            // if(CookieService::clearTokenCookie()){
-            //     echo json_encode("Token cleared from cookie successfully");
-            // }
+            $this->cookieService->clearTokenCookie();
             http_response_code(200); // OK
             echo json_encode(['message' => 'User logged out successfully']);
-        } catch(\Exception $e){
+
+        } catch (Exception $e) {
             http_response_code(400); // Bad Request
+            echo json_encode(['message' => $e->getMessage()]);
+
+        }
+    }
+
+    
+    public function checkAuth(){
+        try {
+            $token = $this->cookieService->getTokenCookie();
+            if($token){
+                $payload = $this->JWTservice->validateToken($token);
+                http_response_code(200); // OK
+                echo json_encode(['message' => 'Token is valid', 'data' => $payload]);
+            } else {
+                throw new Exception("No token found");
+            }
+        } catch (\Exception $e) {
+            http_response_code(401); // Unauthorized
             echo json_encode(['message' => $e->getMessage()]);
         }
     }

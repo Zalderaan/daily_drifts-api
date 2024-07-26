@@ -7,7 +7,7 @@ header("Content-Type: application/json");// Set the response content type to JSO
 header("Access-Control-Allow-Origin: *");// Allow from a specific origin
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");// Allow specific HTTP methods
 header("Access-Control-Allow-Headers: Content-Type, Authorization");// Allow specific headers
-header("Access-Control-Allow-Credentials: true");// Optional: Allow credentials
+header("Access-Control-Allow-Credentials: true");// Optional: Allow credentials)
 
 // Handle preflight (OPTIONS) requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {

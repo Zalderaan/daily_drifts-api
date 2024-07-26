@@ -42,13 +42,16 @@ class JWTservice {
         try {
             // check header
             $headers = getallheaders();
+            // echo json_encode($headers);
             $auth_header = isset($headers['Authorization']) ? $headers['Authorization'] : null;
             if (!$auth_header) {
                 return ['valid' => false, 'data' => 'No authorization header'];
             }
 
             // check token
-            if (!preg_match('/Bearer\s(\S+)/', $auth_header, $matches)) {
+            $checkToken = preg_match('/Bearer\s(\S+)/', $auth_header, $matches);
+            // echo json_encode(['check token' => $check]);
+            if ($checkToken) {
                 // decode token
                 $jwt = $matches[1];
                 $decoded = JWT::decode($jwt, new Firebase\JWT\Key($key, 'HS256'));

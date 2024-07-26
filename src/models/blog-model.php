@@ -33,7 +33,7 @@ class Blog extends Connection{
             }
 
             // insert into author_posts
-            $query2 = "INSERT INTO author_posts (user_id, blog_id) VALUES (:user_id, :blog_id)";
+            $query2 = "INSERT INTO author_posts (author_posts_user_id, author_posts_blog_id) VALUES (:user_id, :blog_id)";
             $stmt2 = $this->pdo->prepare($query2);
             $stmt2->bindParam(':user_id', $user_id);
             $stmt2->bindParam(':blog_id', $blog_id);
