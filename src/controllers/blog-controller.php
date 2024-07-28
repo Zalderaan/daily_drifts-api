@@ -17,7 +17,7 @@ class BlogController {
 
     // POST
     public function createBlog(){
-        // echo "createBlog in controller reached";
+        echo "createBlog in controller reached";
         $data = json_decode(file_get_contents('php://input'), true);
 
         try {
@@ -39,6 +39,8 @@ class BlogController {
                 } else {
                     throw new Exception("Error validating token");
                 }
+            } else {
+                throw new Exception("No token found");
             }
         } catch (\Exception $e) {
             http_response_code(400); // Bad Request

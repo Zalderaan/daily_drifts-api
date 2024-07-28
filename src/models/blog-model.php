@@ -39,8 +39,12 @@ class Blog extends Connection{
             $stmt2->bindParam(':blog_id', $blog_id);
             $stmt2->execute();
 
-            $this->pdo->commit();
-            echo json_encode(['message' => 'Blog added successfully']);
+            if($this->pdo->commit()) {
+                echo json_encode(['message' => 'Blog added successfully']);
+            } else {
+                throw new Exception("PDO commit() failed when adding blog");
+            }
+
             return $blog_id;
 
         } catch (PDOException $e) {

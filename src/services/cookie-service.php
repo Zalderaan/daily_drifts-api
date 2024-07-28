@@ -1,11 +1,11 @@
 <?php
-
+// not used na
 class CookieService {
     public function setTokenCookie($token){
         $expires = time() + 3600;
         $path = '/';
         $domain = '';
-        $secure = false;
+        $secure = true;
         $httponly = false;
         $samesite = 'Lax';
 
@@ -24,10 +24,20 @@ class CookieService {
     //       sa Authorization header at isend sa request
 
     public function getTokenCookie(){
+
+        // For debugging, you can print all cookies
+        echo "<pre>";
+        print_r($_COOKIE);
+        echo "</pre>";
+
         if(isset($_COOKIE['token'])){
             return $_COOKIE['token'];
         }
         return null;
+    }
+
+    public function getAllCookies(){
+        return $_COOKIE;
     }
 
     public function clearTokenCookie() {
@@ -37,7 +47,7 @@ class CookieService {
             'domain' => '',
             'secure' => false,
             'httponly' => false,
-            'samesite' => 'Lax',
+            'samesite' => 'None',
         ]);
     }
 
@@ -49,7 +59,7 @@ class CookieService {
                 'domain' => '',
                 'secure' => false,
                 'httponly' => false,
-                'samesite' => 'Lax',
+                'samesite' => 'None',
             ]);
         }
     }

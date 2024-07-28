@@ -39,14 +39,14 @@ class UserAuthController {
 
             if ($result) {
                 $token = $this->JWTservice->generateToken($result);
-                $this->cookieService->setTokenCookie($token);
+                // $this->cookieService->setTokenCookie($token); //not used anymore
                 // echo json_encode("Token set in cookie successfully");
 
                 // echo $token;
 
-                // $data['token'] = $token;
+                $data['token'] = $token;
                 http_response_code(200); // OK
-                echo json_encode(['message' => 'User logged in successfully', 'email' => $data['email'] ]);
+                echo json_encode(['message' => 'User logged in successfully', 'email' => $data['email'], 'token' => $data['token']]);
             } else {
                 throw new Exception("Invalid credentials");
             }
