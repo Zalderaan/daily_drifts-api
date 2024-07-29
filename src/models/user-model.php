@@ -4,7 +4,6 @@ require_once __DIR__ . '/../../config/dbconnection.php';
 
 class User extends Connection {
     private $pdo;
-
     public function __construct() {
         $connection = new Connection();
         $this->pdo = $connection->connect();
@@ -12,6 +11,7 @@ class User extends Connection {
 
     // get user data from email (for login)
     public function fetchDataByEmail($email) {
+        // $email = $data['email'];
         $query = "SELECT * FROM users WHERE user_email = :email";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':email', $email);
@@ -56,7 +56,11 @@ class User extends Connection {
     }
 
     // create new user
-    public function create($username, $email, $password) {
+    public function create($data) {
+
+        $username = $data['username'];
+        $email = $data['email'];
+        $password = $data['password'];
         // hash password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
