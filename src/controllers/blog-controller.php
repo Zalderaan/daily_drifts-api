@@ -17,7 +17,7 @@ class BlogController {
 
     // POST
     public function createBlog(){
-        echo "createBlog in controller reached";
+        // echo "createBlog in controller reached";
         $data = json_decode(file_get_contents('php://input'), true);
 
         try {
@@ -27,7 +27,7 @@ class BlogController {
             if($token){
                 // validate token
                 $validate = $this->JWTservice->validateToken($token);
-                echo json_encode($validate);
+                // echo json_encode($validate);
 
                 // extract data if token is valid
                 if($validate){
@@ -35,7 +35,7 @@ class BlogController {
                     $result = $this->blogModel->addBlog($data, $userid);
 
                     http_response_code(201); // Created
-                    echo json_encode(['message' => 'Blog created successfully']);
+                    echo json_encode(['message' => 'Blog created successfully', 'result' => $result ]);
                 } else {
                     throw new Exception("Error validating token");
                 }

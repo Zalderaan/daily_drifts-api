@@ -45,8 +45,9 @@ class UserAuthController {
                 // echo $token;
 
                 $data['token'] = $token;
+                // $_COOKIE['token']; // di na-uupdate yung token sa cookiespag ginamit yung setTokenCookie
                 http_response_code(200); // OK
-                echo json_encode(['message' => 'User logged in successfully', 'email' => $data['email'], 'token' => $data['token']]);
+                echo json_encode(['message' => 'User logged in successfully', 'email' => $data['email'], 'token' => $data['token'], ]);
             } else {
                 throw new Exception("Invalid credentials");
             }

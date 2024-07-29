@@ -25,11 +25,9 @@ class CookieService {
 
     public function getTokenCookie(){
 
-        // For debugging, you can print all cookies
-        echo "<pre>";
-        print_r($_COOKIE);
-        echo "</pre>";
-
+        if(!isset($_COOKIE['token'])){
+            return json_encode(['message' => 'No token found (this is from getTokenCookie()']);
+        }
         if(isset($_COOKIE['token'])){
             return $_COOKIE['token'];
         }

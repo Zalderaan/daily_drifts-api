@@ -16,9 +16,13 @@ class Blog extends Connection{
 
             $this->pdo->beginTransaction();
 
-            $blog_title = $data['blog_title'];
-            $blog_body = $data['blog_body'];
-            $data['user_id'] = $user_id; //kukunin pa to from jwt idk how to implement pa
+            $blog_title = isset($data['blog_title']) ? $data['blog_title'] : null;
+            $blog_body = isset($data['blog_body']) ? $data['blog_body'] : null;
+            $data['user_id'] = $user_id; //kkinuha from jwt token
+
+            if(!$blog_title || !$blog_body) {
+                throw new Exception("Please provide blog title and body");
+            }
 
             // insert new blog first
             $query = "INSERT INTO blogs (blog_title, blog_body) VALUES (:blog_title, :blog_body)";
@@ -39,13 +43,19 @@ class Blog extends Connection{
             $stmt2->bindParam(':blog_id', $blog_id);
             $stmt2->execute();
 
+            $query3 = "SELECT user_username FROM users WHERE user_id = :user_id";
+            $stmt = $this->pdo->prepare($query3);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->execute();
+            $author_username = $stmt->fetchColumn();
+
             if($this->pdo->commit()) {
-                echo json_encode(['message' => 'Blog added successfully']);
+                // echo json_encode(['message' => 'Blog added successfully', 'blog_id' => $blog_id, 'blog_title' => $blog_title, 'author_user_id' => $user_id]); 
             } else {
                 throw new Exception("PDO commit() failed when adding blog");
             }
 
-            return $blog_id;
+            return array('blog_title' => $blog_title, 'author_posts_user_username' => $author_username);
 
         } catch (PDOException $e) {
             $this->pdo->rollBack();

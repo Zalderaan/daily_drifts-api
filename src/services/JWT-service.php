@@ -41,7 +41,7 @@ class JWTservice {
 
         try {
             // check header
-            $headers = getallheaders();
+            $headers = apache_request_headers();
             // echo json_encode($headers);
             $auth_header = isset($headers['Authorization']) ? $headers['Authorization'] : null;
             if (!$auth_header) {
@@ -50,7 +50,7 @@ class JWTservice {
 
             // check token
             $checkToken = preg_match('/Bearer\s(\S+)/', $auth_header, $matches);
-            // echo json_encode(['check token' => $check]);
+            // echo json_encode(['check token' => $checkToken]);
             if ($checkToken) {
                 // decode token
                 $jwt = $matches[1];
@@ -59,7 +59,6 @@ class JWTservice {
             
             } else {
                 throw new Exception("Token not provided");
-            
             }
 
         } catch (\Firebase\JWT\ExpiredException $e) {
