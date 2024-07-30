@@ -20,6 +20,9 @@ class Router {
             // posts
             $r->addRoute('POST', '/create-blog', ['BlogController', 'createBlog']);
             $r->addRoute('GET', '/blogs', ['BlogController', 'getAllBlogs']);
+            $r->addRoute('GET', '/blogs/{blog_id}', ['BlogController', 'getSpecificBlog']);
+            // $r->addRoute('PUT', '/update-blog/{blog_id}', ['BlogController', 'updateBlog']);
+            $r->addRoute('DELETE', '/delete-blog', ['BlogController', 'deleteSpecificBlog']);
         });
     }
 

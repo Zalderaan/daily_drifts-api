@@ -88,6 +88,8 @@ class Blog extends Connection{
                 author_posts ON blogs.blog_id = author_posts.author_posts_blog_id
             INNER JOIN
                 users ON users.user_id = author_posts.author_posts_user_id
+            ORDER BY
+                blogs.blog_created_at DESC
             ";
     
             $stmt = $this->pdo->prepare($query);
@@ -101,6 +103,44 @@ class Blog extends Connection{
         }
     }
 
+    public function getBlogById($blog_id){
+        try {
+            $query = "
+            SELECT 
+                blogs.blog_id AS blog_id,
+                blogs.blog_title AS blog_title,
+                blogs.blog_body AS blog_body,
+                blogs.blog_created_at AS author_posts_created_at,
+                users.user_id AS author_user_id,
+                users.user_username AS author_user_username
+            FROM 
+                blogs
+            INNER JOIN
+                author_posts ON blogs.blog_id = author_posts.author_posts_blog_id
+            INNER JOIN
+                users ON users.user_id = author_posts.author_posts_user_id
+            WHERE
+                blogs.blog_id = :blog_id
+            ";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':blog_id', $blog_id);
+            $stmt->execute();
+            $blog = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if(!$blog) {
+                throw new Exception("Blog not found");
+            }
+
+            return $blog;
+
+        } catch (PDOException $e){
+            echo json_encode(['PDO Error: ' => $e->getMessage()]);
+        } catch (Exception $e) {
+            echo json_encode(['Error: ' => $e->getMessage()]);
+            // return null;
+        }
+    }
+
     public function getBlogsByAuthor($data){
         
     }
@@ -111,7 +151,22 @@ class Blog extends Connection{
     }
 
     // DELETE
-    public function deleteBlog(){
-        $query = "DELETE FROM blogs WHERE id = :id";
+    public function deleteBlog($blog_id, $user_id){
+
+        try {
+            $query = "DELETE FROM blogs WHERE blog_id = :blog_id
+            AND blog_id IN (SELECT author_posts_blog_id FROM author_posts WHERE author_posts_user_id = :user_id)
+            ";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':blog_id', $blog_id);
+            $stmt->bindParam(':user_id', $user_id);
+            $deleteResult = $stmt->execute();
+
+            return $deleteResult;
+            
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            echo json_encode(['message' => $e->getMessage() ]);
+        }
     }
 }
