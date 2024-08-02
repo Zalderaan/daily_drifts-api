@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../config/dbconnection.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../controllers/comment-controller.php';
 
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
@@ -21,8 +22,13 @@ class Router {
             $r->addRoute('POST', '/create-blog', ['BlogController', 'createBlog']);
             $r->addRoute('GET', '/blogs', ['BlogController', 'getAllBlogs']);
             $r->addRoute('GET', '/blogs/{blog_id}', ['BlogController', 'getSpecificBlog']);
-            // $r->addRoute('PUT', '/update-blog/{blog_id}', ['BlogController', 'updateBlog']);
+            $r->addRoute('PUT', '/edit-blog', ['BlogController', 'updateSpecificBlog']);
             $r->addRoute('DELETE', '/delete-blog', ['BlogController', 'deleteSpecificBlog']);
+
+            // comments
+            $r->addRoute('POST', '/create-comment', ['CommentController', 'createComment']);
+            $r->addRoute('GET', '/comments/{blog_id}', ['CommentController', 'getCommentsByBlogId']);
+            $r->addRoute('DELETE', '/delete-comment', ['CommentController', 'removeComment']);
         });
     }
 

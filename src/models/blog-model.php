@@ -141,22 +141,36 @@ class Blog extends Connection{
         }
     }
 
-    public function getBlogsByAuthor($data){
-        
+    public function getBlogsByAuthor(){
+
     }
 
     // PUT
-    public function updateBlog(){
+    public function updateBlog($data, $blog_id){
+        try {
+            $query = "UPDATE blogs SET blog_title = :blog_title, blog_body = :blog_body WHERE blog_id = :blog_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':blog_title', $data['blog_title']);
+            $stmt->bindParam(':blog_body', $data['blog_body']);
+            $stmt->bindParam(':blog_id', $blog_id);
+            $updateResult = $stmt->execute();
 
+            if($updateResult){
+                return $updateResult;
+
+            } else {
+                throw new Exception("Error updating blog");
+            }
+        } catch (Exception $e) {
+            echo json_encode(['message' => $e->getMessage()]);
+        }
     }
 
     // DELETE
     public function deleteBlog($blog_id, $user_id){
-
         try {
             $query = "DELETE FROM blogs WHERE blog_id = :blog_id
-            AND blog_id IN (SELECT author_posts_blog_id FROM author_posts WHERE author_posts_user_id = :user_id)
-            ";
+            AND blog_id IN (SELECT author_posts_blog_id FROM author_posts WHERE author_posts_user_id = :user_id)";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':blog_id', $blog_id);
             $stmt->bindParam(':user_id', $user_id);
