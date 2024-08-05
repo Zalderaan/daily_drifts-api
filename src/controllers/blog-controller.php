@@ -81,6 +81,19 @@ class BlogController {
         }
     }
 
+    public function getSearchBlogs() {
+        // echo "getSearchBlogs in controller reached";
+        try {
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $blogs = $this->blogModel->searchBlogs($search);
+            http_response_code(200); // OK
+            echo json_encode(['message' => 'Blogs searched successfully', 'blogs' => $blogs]);
+        } catch (Exception $e) {
+            http_response_code(400); // Bad Request
+            echo json_encode(['message' => $e->getMessage()]);
+        }
+    }
+
     // PUT
     public function updateSpecificBlog(){
         // echo "updateSpecificBlog in controller reached";

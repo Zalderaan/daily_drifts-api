@@ -22,6 +22,7 @@ class Router {
             $r->addRoute('POST', '/create-blog', ['BlogController', 'createBlog']);
             $r->addRoute('GET', '/blogs', ['BlogController', 'getAllBlogs']);
             $r->addRoute('GET', '/blogs/{blog_id}', ['BlogController', 'getSpecificBlog']);
+            $r->addRoute('GET', '/search-blogs', ['BlogController', 'getSearchBlogs']);
             $r->addRoute('PUT', '/edit-blog', ['BlogController', 'updateSpecificBlog']);
             $r->addRoute('DELETE', '/delete-blog', ['BlogController', 'deleteSpecificBlog']);
 
