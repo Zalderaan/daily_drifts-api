@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header("Content-Type: application/json");// Set the response content type to JSON
-header("Access-Control-Allow-Headers: Content-Type, Authorization");// Allow specific headers
+header("Content-Type: application/json"); // Set the response content type to JSON
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Allow specific headers
 
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     // Should do a check here to match $_SERVER['HTTP_ORIGIN'] to a

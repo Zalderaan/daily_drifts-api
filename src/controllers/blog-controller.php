@@ -65,7 +65,19 @@ class BlogController {
     public function getSpecificBlog($blog_id){
         // echo "getSpecificBlog in controller reached";
         try {
-            
+            // increment blog views
+            // echo json_encode([isset($_COOKIE["viewed_blog_$blog_id"])]);
+            // echo json_encode([$_COOKIE]);
+            if(!isset($_COOKIE["viewed_blog_$blog_id"])) {
+                $this->blogModel->addViews($blog_id);
+                    setcookie("viewed_blog_$blog_id", true, time() + 3600, "/", "", true, false);
+            } else {
+                // echo json_encode(['message' => 'Blog already viewed']);
+            }
+
+            // $this->blogModel->addViews($blog_id);
+
+            // fetch specific blog details
             $blog = $this->blogModel->getBlogById($blog_id);
             http_response_code(200); // OK
             if($blog) {

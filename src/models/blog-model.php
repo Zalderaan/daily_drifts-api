@@ -88,13 +88,14 @@ class Blog extends Connection
             INNER JOIN
                 users ON users.user_id = author_posts.author_posts_user_id
             WHERE
-                blogs.blog_title LIKE :query OR blogs.blog_body LIKE :query
+                blogs.blog_title LIKE :query OR blogs.blog_body LIKE :query1
             ORDER BY
                 blogs.blog_created_at DESC
             ";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':query', $query);
+            $stmt->bindParam(':query1', $query);
             $stmt->execute();
             $blogs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -120,6 +121,7 @@ class Blog extends Connection
                 blogs.blog_title AS blog_title,
                 blogs.blog_body AS blog_body,
                 blogs.blog_created_at AS author_posts_created_at,
+                blogs.blog_views AS blog_views,
                 users.user_id AS author_user_id,
                 users.user_username AS author_user_username
             FROM 
@@ -187,6 +189,24 @@ class Blog extends Connection
 
     }
 
+    public function addViews($blog_id){
+        try {
+            $query = "UPDATE blogs SET blog_views = blog_views + 1 WHERE blog_id = :blog_id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':blog_id', $blog_id);
+            $incrementedView = $stmt->execute();
+
+            if ($incrementedView) {
+                return $incrementedView;
+            } else {
+                throw new Exception("Error adding views");
+            }
+
+        } catch (PDOException $e) {
+            echo json_encode(['message' => "Error adding views: " . $e->getMessage()]);
+        }
+    }
+
     // PUT
     public function updateBlog($data, $blog_id)
     {
@@ -227,4 +247,6 @@ class Blog extends Connection
             echo json_encode(['message' => $e->getMessage()]);
         }
     }
+
+    
 }
